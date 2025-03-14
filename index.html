@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Notification Test</title>
+    
+    <!-- iOS Fullscreen Meta Tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Notify App">
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: #222;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        button {
+            background-color: #ff9800;
+            border: none;
+            padding: 15px;
+            margin: 10px;
+            font-size: 18px;
+            cursor: pointer;
+            border-radius: 5px;
+            color: white;
+        }
+
+        button:hover {
+            background-color: #e68900;
+        }
+    </style>
+
+    <script>
+        function requestPermission() {
+            if (!("Notification" in window)) {
+                alert("This browser does not support notifications.");
+                return;
+            }
+            Notification.requestPermission().then(permission => {
+                if (permission === "granted") {
+                    alert("Notifications enabled!");
+                } else {
+                    alert("Notifications blocked!");
+                }
+            });
+        }
+
+        function sendNotification() {
+            if (Notification.permission === "granted") {
+                let message = prompt("Enter notification message:", "Test Notification");
+                if (message) {
+                    new Notification("Alert!", { body: message });
+                }
+            } else {
+                alert("Enable notifications first!");
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Notification Test</h1>
+    <button onclick="requestPermission()">Enable Notifications</button>
+    <button onclick="sendNotification()">Send Notification</button>
+</body>
+</html>
