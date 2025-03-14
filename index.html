@@ -96,7 +96,23 @@
                 navigator.geolocation.getCurrentPosition(function(position) {
                     const latitude = position.coords.latitude;
                     const longitude = position.coords.longitude;
-                    document.getElementById("location").innerHTML = `Current Location: Latitude: ${latitude}, Longitude: ${longitude}`;
+                    // Use OpenCage Geocoder to reverse geocode the coordinates
+                    const apiKey = "af2fa8b3174642659e55ae127055b990"; // Your OpenCage API key
+                    const url = `https://api.opencagedata.com/geocode/v1/json?q=${latitude}+${longitude}&key=${apiKey}&language=en`;
+
+                    fetch(url)
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.results && data.results[0]) {
+                                const country = data.results[0].components.country;
+                                document.getElementById("location").innerHTML = `You are in: ${country}`;
+                            } else {
+                                document.getElementById("location").innerHTML = "Unable to determine the country.";
+                            }
+                        })
+                        .catch(error => {
+                            document.getElementById("location").innerHTML = "Error fetching location data.";
+                        });
                 }, function() {
                     document.getElementById("location").innerHTML = "Location access denied or unavailable.";
                 });
