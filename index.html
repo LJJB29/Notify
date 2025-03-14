@@ -57,6 +57,12 @@
         button:focus {
             outline: none;
         }
+
+        #location {
+            margin-top: 20px;
+            font-size: 16px;
+            color: #ff9800;
+        }
     </style>
 
     <script>
@@ -84,6 +90,20 @@
                 alert("Enable notifications first!");
             }
         }
+
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    const latitude = position.coords.latitude;
+                    const longitude = position.coords.longitude;
+                    document.getElementById("location").innerHTML = `Current Location: Latitude: ${latitude}, Longitude: ${longitude}`;
+                }, function() {
+                    document.getElementById("location").innerHTML = "Location access denied or unavailable.";
+                });
+            } else {
+                document.getElementById("location").innerHTML = "Geolocation is not supported by this browser.";
+            }
+        }
     </script>
 </head>
 <body>
@@ -91,5 +111,7 @@
     <p>Test notifications on your iPhone or iPad by enabling them below.</p>
     <button onclick="requestPermission()">Enable Notifications</button>
     <button onclick="sendNotification()">Send Notification</button>
+    <button onclick="getLocation()">Get Current Location</button>
+    <p id="location">Location will appear here.</p>
 </body>
 </html>
